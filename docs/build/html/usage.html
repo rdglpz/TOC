@@ -1,0 +1,721 @@
+
+
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Total-Operating-Characteristic Curve’s Implementation &#8212; OOTOC V.0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/cloud.css" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css" />
+    <link rel="stylesheet" href="./" type="text/css" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+
+    
+    
+     
+        <script src="_static/cloud.base.js"></script>
+    
+
+    
+     
+        <script src="_static/cloud.js"></script>
+    
+
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Total-Operating-Characteristic Curve’s documentation" href="index.html" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head><body>
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="index.html" title="Total-Operating-Characteristic Curve’s documentation"
+             accesskey="P">previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">OOTOC V.0.1 documentation</a> &#187;</li>
+
+        <li class="nav-item nav-item-this"><a href="">Total-Operating-Characteristic Curve’s Implementation</a></li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="total-operating-characteristic-curve-s-implementation">
+<h1>Total-Operating-Characteristic Curve’s Implementation<a class="headerlink" href="#total-operating-characteristic-curve-s-implementation" title="Permalink to this heading">¶</a></h1>
+<p>This project consist of classes and methods to compute and plot a TOC curve. The operations include, normalization, approximation by vectors (means of subsets of data).</p>
+<section id="toc-class">
+<h2>TOC class<a class="headerlink" href="#toc-class" title="Permalink to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ootoc.TOC">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ootoc.</span></span><span class="sig-name descname"><span class="pre">TOC</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rank</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">array([],</span> <span class="pre">dtype=float64)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">groundtruth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">array([],</span> <span class="pre">dtype=float64)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sortw</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ootoc.TOC" title="Permalink to this definition">¶</a></dt>
+<dd><p>This class implements the Total Operating Characteristic Curve. The TOC computed from a rankl and groundtruth using this instantiation is named <strong>standard TOC</strong> trought the document.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>rank</strong> – The class is instantiated with the optional parameter <code class="docutils literal notranslate"><span class="pre">rank</span></code> that is a numpy array of a predicting feature.</p></li>
+<li><p><strong>groundtruth</strong> – The class is instantiated with the optional parameter <code class="docutils literal notranslate"><span class="pre">groundtruth</span></code> that is a numpy array of binary labels (0,1).</p></li>
+<li><p><strong>sortw</strong> – 1 by default, the data is sorted using the formula: 1e9*rank+sortw*groundtruth, that means that data with the highest class value is sorted first.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Variables<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>kind</strong> – A string with the value ‘None’ by default, it indicates the kind of TOC, for instance: TOC, normalized, vector, density and qspline. The <code class="docutils literal notranslate"><span class="pre">kind</span></code> attibute is mainly used for plotting inside the class.</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The class instance, if <code class="docutils literal notranslate"><span class="pre">rank</span></code> and <code class="docutils literal notranslate"><span class="pre">grountruth</span></code> are given it computes the TOC, and the <code class="docutils literal notranslate"><span class="pre">kind</span></code> is TOC, otherwise it is an empty class. Some methods of the TOC class return the other kinds of TOC, suich as density, noprmalize, etc.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">TOC</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<section id="area">
+<h3>Area<a class="headerlink" href="#area" title="Permalink to this heading">¶</a></h3>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ootoc.TOC.area">
+<span class="sig-prename descclassname"><span class="pre">TOC.</span></span><span class="sig-name descname"><span class="pre">area</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#ootoc.TOC.area" title="Permalink to this definition">¶</a></dt>
+<dd><p>Area under the curve of the TOC.</p>
+</dd></dl>
+
+</section>
+<section id="area-ratio">
+<h3>Area Ratio<a class="headerlink" href="#area-ratio" title="Permalink to this heading">¶</a></h3>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ootoc.TOC.areaRatio">
+<span class="sig-prename descclassname"><span class="pre">TOC.</span></span><span class="sig-name descname"><span class="pre">areaRatio</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#ootoc.TOC.areaRatio" title="Permalink to this definition">¶</a></dt>
+<dd><p>areaRatio with respect to the parallelogram. If the maximum TOC area is that of the parallelogram, hence this is the ratio of the TOC area inside the parallelogram divided by the parallelogram arena.
+Notice that the area inside the parallelogram is usually different from the area under the curve, it is computed substracting from the <code class="docutils literal notranslate"><span class="pre">area</span></code> the triangle in the left side of the parallelogram.</p>
+</dd></dl>
+
+</section>
+<section id="base-number-of-positives">
+<h3>Base number of positives<a class="headerlink" href="#base-number-of-positives" title="Permalink to this heading">¶</a></h3>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ootoc.TOC.basenpos">
+<span class="sig-prename descclassname"><span class="pre">TOC.</span></span><span class="sig-name descname"><span class="pre">basenpos</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#ootoc.TOC.basenpos" title="Permalink to this definition">¶</a></dt>
+<dd><p>basenpos preserve the npos value from the standard TOC when it is normalized. Nevertheless it is modified by resample.</p>
+</dd></dl>
+
+</section>
+<section id="base-number-of-true-positve-plus-false-positives">
+<h3>Base number of true positve plus false positives<a class="headerlink" href="#base-number-of-true-positve-plus-false-positives" title="Permalink to this heading">¶</a></h3>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ootoc.TOC.basentppfp">
+<span class="sig-prename descclassname"><span class="pre">TOC.</span></span><span class="sig-name descname"><span class="pre">basentppfp</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#ootoc.TOC.basentppfp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Some TOCs result from applying operations to an standard TOC, in such a case the ntppfp could change int the resulting TOC nevertheless the basentppfp is copied from the standard TOC.
+For instance, ntppfp is 1 in the normalized TOC, but the basetppfp preserves the value from the standard TOC.</p>
+</dd></dl>
+
+</section>
+<section id="kind-of-toc-curve">
+<h3>Kind of TOC curve<a class="headerlink" href="#kind-of-toc-curve" title="Permalink to this heading">¶</a></h3>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ootoc.TOC.kind">
+<span class="sig-prename descclassname"><span class="pre">TOC.</span></span><span class="sig-name descname"><span class="pre">kind</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'None'</span></em><a class="headerlink" href="#ootoc.TOC.kind" title="Permalink to this definition">¶</a></dt>
+<dd><p>The <code class="docutils literal notranslate"><span class="pre">kind</span></code> attribute indicates the type of TOC curve, that is to say, it is <strong>“TOC”</strong> kind if the <em>x</em> axes presents the true positives plus false positives count, and the <em>y</em> axes presents the true-positive count.
+It is a <strong>“Vector””</strong> kind if the curve is a representation of the original TOC, that is to say it stores <em>nvector</em> vectorial means of the original TOC data.</p>
+</dd></dl>
+
+</section>
+<section id="indices-of-the-sorted-rank">
+<h3>Indices of the sorted rank<a class="headerlink" href="#indices-of-the-sorted-rank" title="Permalink to this heading">¶</a></h3>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ootoc.TOC.indices">
+<span class="sig-prename descclassname"><span class="pre">TOC.</span></span><span class="sig-name descname"><span class="pre">indices</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#ootoc.TOC.indices" title="Permalink to this definition">¶</a></dt>
+<dd><p>This attibute stores the indices fo the sorted rank. Storing the indices is useful to save computational time when converting a rank array to a probability value.</p>
+</dd></dl>
+
+</section>
+<section id="number-of-data">
+<h3>Number of data<a class="headerlink" href="#number-of-data" title="Permalink to this heading">¶</a></h3>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ootoc.TOC.ndata">
+<span class="sig-prename descclassname"><span class="pre">TOC.</span></span><span class="sig-name descname"><span class="pre">ndata</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#ootoc.TOC.ndata" title="Permalink to this definition">¶</a></dt>
+<dd><p>This attribute stores the number of data in the arrays of the class,  notice that the number of positives (<code class="docutils literal notranslate"><span class="pre">npos</span></code>) or other counts are altered when interpolations, normalization or vectorization of the TOC is applied, while <code class="docutils literal notranslate"><span class="pre">ndata</span></code> stores the length of the data arrays independent of the mentioned counts.</p>
+</dd></dl>
+
+</section>
+<section id="number-of-positive-instances">
+<h3>Number of positive instances<a class="headerlink" href="#number-of-positive-instances" title="Permalink to this heading">¶</a></h3>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ootoc.TOC.npos">
+<span class="sig-prename descclassname"><span class="pre">TOC.</span></span><span class="sig-name descname"><span class="pre">npos</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#ootoc.TOC.npos" title="Permalink to this definition">¶</a></dt>
+<dd><p>Similar to ntpfp, this variable stores the number of positive data (1 valued data), and also it is lost in the normalized TOC ( it is 1 in th enormalized TOC).</p>
+</dd></dl>
+
+</section>
+<section id="number-of-true-positives-plus-false-positives">
+<h3>Number of true positives plus false positives<a class="headerlink" href="#number-of-true-positives-plus-false-positives" title="Permalink to this heading">¶</a></h3>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ootoc.TOC.ntppfp">
+<span class="sig-prename descclassname"><span class="pre">TOC.</span></span><span class="sig-name descname"><span class="pre">ntppfp</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#ootoc.TOC.ntppfp" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is the count fo true positives plus false positives. Notice that this number could be different from the number of data, for instance, normalized, vector, resampled or density TOCs could have a different ndata and ntppfp value.</p>
+</dd></dl>
+
+</section>
+<section id="positive-class-data-proportion">
+<h3>Positive-class data proportion<a class="headerlink" href="#positive-class-data-proportion" title="Permalink to this heading">¶</a></h3>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ootoc.TOC.PDataProp">
+<span class="sig-prename descclassname"><span class="pre">TOC.</span></span><span class="sig-name descname"><span class="pre">PDataProp</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#ootoc.TOC.PDataProp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Proportion of positive data in the data. The purpose is to maintain the proportion of class 1 data, hence to preserve the knowlkedege about data imbalance and proportion of calsses even if the TOC is normalized.</p>
+</dd></dl>
+
+</section>
+<section id="thresholds-used-for-the-toc-computation">
+<h3>Thresholds used for the TOC computation<a class="headerlink" href="#thresholds-used-for-the-toc-computation" title="Permalink to this heading">¶</a></h3>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ootoc.TOC.thresholds">
+<span class="sig-prename descclassname"><span class="pre">TOC.</span></span><span class="sig-name descname"><span class="pre">thresholds</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#ootoc.TOC.thresholds" title="Permalink to this definition">¶</a></dt>
+<dd><p>A numpy array with thresholds of the TOC, they are computed using the ranks, that is to say, in the standard TOC most of the ranks are equal to the thresholds.</p>
+</dd></dl>
+
+</section>
+<section id="array-of-true-positives-plus-false-postives">
+<h3>Array of true positives plus false postives<a class="headerlink" href="#array-of-true-positives-plus-false-postives" title="Permalink to this heading">¶</a></h3>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ootoc.TOC.TPplusFP">
+<span class="sig-prename descclassname"><span class="pre">TOC.</span></span><span class="sig-name descname"><span class="pre">TPplusFP</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#ootoc.TOC.TPplusFP" title="Permalink to this definition">¶</a></dt>
+<dd><p>A numpy array with the sum of true positives plus false positives.</p>
+</dd></dl>
+
+</section>
+<section id="array-of-true-positives">
+<h3>Array of true positives<a class="headerlink" href="#array-of-true-positives" title="Permalink to this heading">¶</a></h3>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ootoc.TOC.TP">
+<span class="sig-prename descclassname"><span class="pre">TOC.</span></span><span class="sig-name descname"><span class="pre">TP</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#ootoc.TOC.TP" title="Permalink to this definition">¶</a></dt>
+<dd><p>A numpy array with the sum of true positives</p>
+</dd></dl>
+
+</section>
+<section id="probability-density-function-computation">
+<h3>Probability density function computation<a class="headerlink" href="#probability-density-function-computation" title="Permalink to this heading">¶</a></h3>
+<dl class="py method">
+<dt class="sig sig-object py" id="ootoc.TOC.density">
+<span class="sig-prename descclassname"><span class="pre">TOC.</span></span><span class="sig-name descname"><span class="pre">density</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">smoothing</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ootoc.TOC.density" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function computes an approximation of the derivative of the TOC curve using cubic and fifth order centered finite differences.
+That is to say, if the <code class="docutils literal notranslate"><span class="pre">order</span></code> parameter is set to 1, it computes an approximation using a the finite difference before and after the current point, hence
+this approximation provides a cubic error term. Additionally, the function computes a smooth version of the derivative using a mean filter.
+The original TP and TPplusFP arrays from the input TOC (the TOC which this function is called from) are copied.
+.. warning::
+It is strongly suggested to use a <strong>vector</strong> or <strong>nvector</strong>  kind TOC, because the derivative of a standard TOC only produces finite differences with 0 or 1, hence
+the derivative of a standard TOC is, usually, highly noisy and non-informative. It is strongly suggested to use a <strong>vector</strong> kind TOC produced from a normalized TOC,
+or a <strong>nvector</strong> TOC, because this kind of TOC have a maximum value of 1 in both access, hence, the derivative can be seen as a density probability function.
+This is intended use of the function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>smoothing</strong> – window size param for smoothing the derivative. It is -1 by default, so it is computed inside the function trying to present an informative smooth TOC. Optional</p></li>
+<li><p><strong>order</strong> – 1 by defautl. 1 uses formulae for derivatives with a cubic error term, and 2, produces a 5-powered error term. Optional</p></li>
+</ul>
+</dd>
+<dt class="field-even">Variables<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>df</strong> – density/TOC derivative function approximation (numpy array). This variable can be publicly acccesed in this TOC.</p></li>
+<li><p><strong>smooth</strong> – smoothed density/TOC derivative (numpy array). This variable can be publicly acccesed in this TOC..</p></li>
+<li><p><strong>areaSm</strong> – area array of the smoothed density (numpy array). The cummulative area of the density, hence it returns for any position the cummulative area from 0 to the postion.</p></li>
+<li><p><strong>areaSm</strong> – area array of the non-smoothed density (numpy array). The cummulative area of the density, hence it returns for any position the cummulative area from 0 to the postion.</p></li>
+<li><p><strong>areaError</strong> – The area and areaSm are forced to integrate 1, nevertheless the numeric approximation actually do not integrate 1 due to the various approximations that the process uses,
+This variable stores the actual integral, hence it gives a measure of the error.</p></li>
+<li><p><strong>areaSmError</strong> – Similar to areaError but for the smooth version of the TOC.</p></li>
+<li><p><strong>FP</strong> – an array of false positives, hence it is possible to plot or to analyze the density vs the FP.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A TOC curve of <code class="docutils literal notranslate"><span class="pre">kind</span></code> “density”, in contrast with other TOC kinds, it includes the variables mentioned above.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">TOC</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="computation-of-the-difference-of-two-tocs">
+<h3>Computation of the difference of two TOCs<a class="headerlink" href="#computation-of-the-difference-of-two-tocs" title="Permalink to this heading">¶</a></h3>
+<dl class="py method">
+<dt class="sig sig-object py" id="ootoc.TOC.diff">
+<span class="sig-prename descclassname"><span class="pre">TOC.</span></span><span class="sig-name descname"><span class="pre">diff</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">T2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ootoc.TOC.diff" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method computes the difference between the self TOC  (the TOC which the method is called from) and the T2 TOC (self-T2). Possibly the best usage with two normlized TOCs, nevertheless the method does not validate such a case.
+The TOC with the lowest number of data is resampled, to get to TOC with the same number.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>T2</strong> – the second TOC that is substracted from the TOC the method is called from (self-T2).</p>
+</dd>
+<dt class="field-even">Variables<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>kind</strong> – <em>‘Diff’</em>, the resulting TOC is kind ‘Diff’.</p></li>
+<li><p><strong>ndata</strong> – The number of data in the resulting curve is the greater of the two input TOCs.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns the a new curve with the difference., new memory is allocated.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">TOC</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="toc-normalization">
+<h3>TOC normalization<a class="headerlink" href="#toc-normalization" title="Permalink to this heading">¶</a></h3>
+<dl class="py method">
+<dt class="sig sig-object py" id="ootoc.TOC.normalize">
+<span class="sig-prename descclassname"><span class="pre">TOC.</span></span><span class="sig-name descname"><span class="pre">normalize</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ootoc.TOC.normalize" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method scales the axis to the interval [0,1]. The self TOC (the TOC which the method is called from) is normalized, there is not new memory allocation.
+:return: Returns the modified TOC curve
+:rtype: <code class="docutils literal notranslate"><span class="pre">TOC</span></code></p>
+<p>The <code class="docutils literal notranslate"><span class="pre">kind</span></code> TOC curve is <em>‘normalized’</em>.
+The  true positives plus false positives count is 1, ntppfp=1,
+and true positives, TP=1.
+Nevertheless the basentppfp and basenpos stores the values of the self TOC.</p>
+</dd></dl>
+
+</section>
+<section id="plotting-the-toc-curve">
+<h3>Plotting the TOC curve<a class="headerlink" href="#plotting-the-toc-curve" title="Permalink to this heading">¶</a></h3>
+<dl class="py method">
+<dt class="sig sig-object py" id="ootoc.TOC.plot">
+<span class="sig-prename descclassname"><span class="pre">TOC.</span></span><span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'default'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">TOCname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'TOC'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kind</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'None'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2400</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2400</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dpi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">300</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xlabel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'default'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ylabel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'default'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ootoc.TOC.plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>A generic plot function for all the kind of TOCs.  All the parameters are optional. If <code class="docutils literal notranslate"><span class="pre">filename</span></code> is not given it plots to a window, otherwise it is a png file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filename</strong> – Optional. If given it must be a png filename, otherwise the TOC is plotted to a window.</p></li>
+<li><p><strong>title</strong> – Optional, title of the plot.</p></li>
+<li><p><strong>kind</strong> – Optional, a standard TOC can be plotted normalized or in the original axis values.</p></li>
+<li><p><strong>height</strong> – pixels of the height. 1800 by default.</p></li>
+<li><p><strong>width</strong> – pixels of the width. 1800 by default.</p></li>
+<li><p><strong>dpi</strong> – resolution. 300 by default.</p></li>
+<li><p><strong>xlabel</strong> – string.</p></li>
+<li><p><strong>ylabel</strong> – string.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>it does not return anything.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="compute-a-probability-from-a-rank-value">
+<h3>Compute a probability from a rank value<a class="headerlink" href="#compute-a-probability-from-a-rank-value" title="Permalink to this heading">¶</a></h3>
+<dl class="py method">
+<dt class="sig sig-object py" id="ootoc.TOC.rank2prob">
+<span class="sig-prename descclassname"><span class="pre">TOC.</span></span><span class="sig-name descname"><span class="pre">rank2prob</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rank</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kind</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Density'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indices</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ootoc.TOC.rank2prob" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function computes probability values associated to a rank value. The <code class="docutils literal notranslate"><span class="pre">thresholds</span></code> array of the density TOC is used for this purpose.
+Very possibly the rank is the same than those used to compute a standard TOC instantiated by TOC(rank,groundtruth), hence the indices used
+in the constructor are available and can save computational time. Otherwise the indices are recomputed. In any case the inputed <code class="docutils literal notranslate"><span class="pre">rank</span></code>
+array must be in the same interval than the thresholds.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>rank</strong> – A numpy array with the ran. The intended uses is that this rank comes from the standard TOC computation, and to associate this rank with geolocations, hence the probabilities can be associated in the same order.</p></li>
+<li><p><strong>kind</strong> – if <code class="docutils literal notranslate"><span class="pre">kind</span></code> is ‘’density’’ the probabilitites are computed with the non-smoothed density function, otherwise the smooth version is used. Notice that a this function only must be called from a ‘’density’’ kind TOC. Optional</p></li>
+<li><p><strong>indices</strong> – Indices of the reversely sorted rank, this array is computed by the standard TOC computation. Hence the computational cost of recomputing them could be avoided, otherwise the indices are recomputed and they are not stored. Optional</p></li>
+</ul>
+</dd>
+</dl>
+<p>return: a numpy array with the probabilities. The probabilities do not sum 1, instead they sum <code class="docutils literal notranslate"><span class="pre">PDataProp</span></code>, that is to say they sum the proportion of positives in the data. That is an estimation of the probability of having a 1-class valued datum.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>numpy array</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="increasing-the-toc-data-by-interpolation">
+<h3>Increasing the TOC data by interpolation<a class="headerlink" href="#increasing-the-toc-data-by-interpolation" title="Permalink to this heading">¶</a></h3>
+<dl class="py method">
+<dt class="sig sig-object py" id="ootoc.TOC.resample">
+<span class="sig-prename descclassname"><span class="pre">TOC.</span></span><span class="sig-name descname"><span class="pre">resample</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">T2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ootoc.TOC.resample" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function creates a new TOC curve,  the data of the self TOC (the TOC which the method is called from)
+is interpolated to the number of data, and the true positves plus false positves, <code class="docutils literal notranslate"><span class="pre">TPplusFP</span></code>  in T2.
+Considering that the number of true positives plus false positives is modified (usually extended to a greater value)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>T2</strong> – the TOC curve with the desired number of data and data values in the TPplusFP axis.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A TOC of the same kind than T2.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#ootoc.TOC" title="ootoc.TOC">TOC</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="vector-representation-of-a-toc">
+<h3>Vector representation of a TOC<a class="headerlink" href="#vector-representation-of-a-toc" title="Permalink to this heading">¶</a></h3>
+<dl class="py method">
+<dt class="sig sig-object py" id="ootoc.TOC.vector">
+<span class="sig-prename descclassname"><span class="pre">TOC.</span></span><span class="sig-name descname"><span class="pre">vector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nmeans</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ootoc.TOC.vector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes a vector representation of the curve using the mean of sets of points.
+The points are those in a set of intervals with equal number of points. if <code class="docutils literal notranslate"><span class="pre">nmeans=30</span></code>, then the number of points in the
+original TOC is divided by 30. If nmeans=-1 (default) the number of intervals is automatically computed, the maximum possible are 8000 the minimum are 1000 or n/5 (the lower).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>nmeans</strong> – The number of intervals. Optional parameter that can be automatically computed. Optional</p></li>
+<li><p><strong>kind</strong> – If the input is a normalized TOC the output is a <em>‘nvector’</em>, otherwise it is a <em>‘verctor’</em> kind.</p></li>
+<li><p><strong>basenpos</strong><strong>,</strong><strong>basentppfp</strong> (<em>npos</em><em>, </em><em>ntppfp</em><em>,</em>) – The counts are taken from the input TOC.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A TOC instance of the vector representation, new memory is allocated.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">TOC</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+<section id="tocdata-class">
+<h2>TOCData class<a class="headerlink" href="#tocdata-class" title="Permalink to this heading">¶</a></h2>
+<p>This class is useful to translate longitude and latitud coordinates and values to a raster object (a rasterio file).
+The intende use is to translate probabilities from the TOC density to a georeferenced raster object.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="tocdata.TOCData">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tocdata.</span></span><span class="sig-name descname"><span class="pre">TOCData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">feature</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lat</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">array([],</span> <span class="pre">dtype=float64)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">array([],</span> <span class="pre">dtype=float64)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nrow</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ncol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">crs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">32641</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rfile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'raster.tif'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tocdata.TOCData" title="Permalink to this definition">¶</a></dt>
+<dd><p>This class can be used to translate lon, lat and feature values to a raster file, and a raster matrix.
+The intended use it to translateprobabilities or values from a TOC that are assocaited with lat,lon coordinates,
+to a raster for visualization.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>feature</strong> – numpy array of feature or probability values.</p></li>
+<li><p><strong>lat</strong> – latitude coordinate associated, index-wise, to a feature value.</p></li>
+<li><p><strong>lon</strong> – longitude coordinate associated, index-wise,  to a feature value.</p></li>
+<li><p><strong>rfile</strong> – name of the raster file that is created during the process.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>TOCData object.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#tocdata.TOCData" title="tocdata.TOCData">TOCData</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<section id="pixel-size-in-latitude-and-longitude-units">
+<h3>Pixel size in latitude and longitude units<a class="headerlink" href="#pixel-size-in-latitude-and-longitude-units" title="Permalink to this heading">¶</a></h3>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tocdata.TOCData.DeltaLat">
+<span class="sig-prename descclassname"><span class="pre">TOCData.</span></span><span class="sig-name descname"><span class="pre">DeltaLat</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#tocdata.TOCData.DeltaLat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Size of a pixel in the latitude axes.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tocdata.TOCData.DeltaLon">
+<span class="sig-prename descclassname"><span class="pre">TOCData.</span></span><span class="sig-name descname"><span class="pre">DeltaLon</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#tocdata.TOCData.DeltaLon" title="Permalink to this definition">¶</a></dt>
+<dd><p>Size of a pixel in the longitude axes.</p>
+</dd></dl>
+
+</section>
+<section id="dimensions-of-the-raster-in-latitude-and-longitude-units">
+<h3>Dimensions of the raster in latitude and longitude units<a class="headerlink" href="#dimensions-of-the-raster-in-latitude-and-longitude-units" title="Permalink to this heading">¶</a></h3>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tocdata.TOCData.lenLat">
+<span class="sig-prename descclassname"><span class="pre">TOCData.</span></span><span class="sig-name descname"><span class="pre">lenLat</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#tocdata.TOCData.lenLat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Length of the raster in the latitude axes.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tocdata.TOCData.lenLon">
+<span class="sig-prename descclassname"><span class="pre">TOCData.</span></span><span class="sig-name descname"><span class="pre">lenLon</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#tocdata.TOCData.lenLon" title="Permalink to this definition">¶</a></dt>
+<dd><p>Length of the raster in the longitude axes.</p>
+</dd></dl>
+
+</section>
+<section id="bounding-box-of-the-raster-in-latitude-and-longitude-units">
+<h3>Bounding box of the raster in latitude and longitude units<a class="headerlink" href="#bounding-box-of-the-raster-in-latitude-and-longitude-units" title="Permalink to this heading">¶</a></h3>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tocdata.TOCData.maxLat">
+<span class="sig-prename descclassname"><span class="pre">TOCData.</span></span><span class="sig-name descname"><span class="pre">maxLat</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#tocdata.TOCData.maxLat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Maximum latitude coordinate.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tocdata.TOCData.maxLon">
+<span class="sig-prename descclassname"><span class="pre">TOCData.</span></span><span class="sig-name descname"><span class="pre">maxLon</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#tocdata.TOCData.maxLon" title="Permalink to this definition">¶</a></dt>
+<dd><p>Maximum latitude coordinate.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tocdata.TOCData.minLat">
+<span class="sig-prename descclassname"><span class="pre">TOCData.</span></span><span class="sig-name descname"><span class="pre">minLat</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#tocdata.TOCData.minLat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Minimum latitude coordinate.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tocdata.TOCData.minLon">
+<span class="sig-prename descclassname"><span class="pre">TOCData.</span></span><span class="sig-name descname"><span class="pre">minLon</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#tocdata.TOCData.minLon" title="Permalink to this definition">¶</a></dt>
+<dd><p>Minmum longitude coordinate.</p>
+</dd></dl>
+
+</section>
+<section id="number-of-rows-and-cols-of-the-raster">
+<h3>Number of rows and cols of the raster<a class="headerlink" href="#number-of-rows-and-cols-of-the-raster" title="Permalink to this heading">¶</a></h3>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tocdata.TOCData.nrow">
+<span class="sig-prename descclassname"><span class="pre">TOCData.</span></span><span class="sig-name descname"><span class="pre">nrow</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#tocdata.TOCData.nrow" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of rows in the raster.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tocdata.TOCData.ncol">
+<span class="sig-prename descclassname"><span class="pre">TOCData.</span></span><span class="sig-name descname"><span class="pre">ncol</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#tocdata.TOCData.ncol" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of cols in the raster.</p>
+</dd></dl>
+
+</section>
+<section id="raster-matrix">
+<h3>Raster matrix<a class="headerlink" href="#raster-matrix" title="Permalink to this heading">¶</a></h3>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tocdata.TOCData.raster">
+<span class="sig-prename descclassname"><span class="pre">TOCData.</span></span><span class="sig-name descname"><span class="pre">raster</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#tocdata.TOCData.raster" title="Permalink to this definition">¶</a></dt>
+<dd><p>Raster matrix .</p>
+</dd></dl>
+
+</section>
+<section id="raster-file">
+<h3>Raster file<a class="headerlink" href="#raster-file" title="Permalink to this heading">¶</a></h3>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tocdata.TOCData.raster_file">
+<span class="sig-prename descclassname"><span class="pre">TOCData.</span></span><span class="sig-name descname"><span class="pre">raster_file</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#tocdata.TOCData.raster_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reference to the raster file as a rasterior object.</p>
+</dd></dl>
+
+</section>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="sphinx-toc sphinxlocaltoc">
+    <h3><a href="index.html">Page contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Total-Operating-Characteristic Curve’s Implementation</a><ul>
+<li><a class="reference internal" href="#toc-class">TOC class</a><ul>
+<li><a class="reference internal" href="#ootoc.TOC"><code class="docutils literal notranslate"><span class="pre">TOC</span></code></a></li>
+<li><a class="reference internal" href="#area">Area</a><ul>
+<li><a class="reference internal" href="#ootoc.TOC.area"><code class="docutils literal notranslate"><span class="pre">TOC.area</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#area-ratio">Area Ratio</a><ul>
+<li><a class="reference internal" href="#ootoc.TOC.areaRatio"><code class="docutils literal notranslate"><span class="pre">TOC.areaRatio</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#base-number-of-positives">Base number of positives</a><ul>
+<li><a class="reference internal" href="#ootoc.TOC.basenpos"><code class="docutils literal notranslate"><span class="pre">TOC.basenpos</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#base-number-of-true-positve-plus-false-positives">Base number of true positve plus false positives</a><ul>
+<li><a class="reference internal" href="#ootoc.TOC.basentppfp"><code class="docutils literal notranslate"><span class="pre">TOC.basentppfp</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#kind-of-toc-curve">Kind of TOC curve</a><ul>
+<li><a class="reference internal" href="#ootoc.TOC.kind"><code class="docutils literal notranslate"><span class="pre">TOC.kind</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#indices-of-the-sorted-rank">Indices of the sorted rank</a><ul>
+<li><a class="reference internal" href="#ootoc.TOC.indices"><code class="docutils literal notranslate"><span class="pre">TOC.indices</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#number-of-data">Number of data</a><ul>
+<li><a class="reference internal" href="#ootoc.TOC.ndata"><code class="docutils literal notranslate"><span class="pre">TOC.ndata</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#number-of-positive-instances">Number of positive instances</a><ul>
+<li><a class="reference internal" href="#ootoc.TOC.npos"><code class="docutils literal notranslate"><span class="pre">TOC.npos</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#number-of-true-positives-plus-false-positives">Number of true positives plus false positives</a><ul>
+<li><a class="reference internal" href="#ootoc.TOC.ntppfp"><code class="docutils literal notranslate"><span class="pre">TOC.ntppfp</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#positive-class-data-proportion">Positive-class data proportion</a><ul>
+<li><a class="reference internal" href="#ootoc.TOC.PDataProp"><code class="docutils literal notranslate"><span class="pre">TOC.PDataProp</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#thresholds-used-for-the-toc-computation">Thresholds used for the TOC computation</a><ul>
+<li><a class="reference internal" href="#ootoc.TOC.thresholds"><code class="docutils literal notranslate"><span class="pre">TOC.thresholds</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#array-of-true-positives-plus-false-postives">Array of true positives plus false postives</a><ul>
+<li><a class="reference internal" href="#ootoc.TOC.TPplusFP"><code class="docutils literal notranslate"><span class="pre">TOC.TPplusFP</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#array-of-true-positives">Array of true positives</a><ul>
+<li><a class="reference internal" href="#ootoc.TOC.TP"><code class="docutils literal notranslate"><span class="pre">TOC.TP</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#probability-density-function-computation">Probability density function computation</a><ul>
+<li><a class="reference internal" href="#ootoc.TOC.density"><code class="docutils literal notranslate"><span class="pre">TOC.density()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#computation-of-the-difference-of-two-tocs">Computation of the difference of two TOCs</a><ul>
+<li><a class="reference internal" href="#ootoc.TOC.diff"><code class="docutils literal notranslate"><span class="pre">TOC.diff()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#toc-normalization">TOC normalization</a><ul>
+<li><a class="reference internal" href="#ootoc.TOC.normalize"><code class="docutils literal notranslate"><span class="pre">TOC.normalize()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#plotting-the-toc-curve">Plotting the TOC curve</a><ul>
+<li><a class="reference internal" href="#ootoc.TOC.plot"><code class="docutils literal notranslate"><span class="pre">TOC.plot()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#compute-a-probability-from-a-rank-value">Compute a probability from a rank value</a><ul>
+<li><a class="reference internal" href="#ootoc.TOC.rank2prob"><code class="docutils literal notranslate"><span class="pre">TOC.rank2prob()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#increasing-the-toc-data-by-interpolation">Increasing the TOC data by interpolation</a><ul>
+<li><a class="reference internal" href="#ootoc.TOC.resample"><code class="docutils literal notranslate"><span class="pre">TOC.resample()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#vector-representation-of-a-toc">Vector representation of a TOC</a><ul>
+<li><a class="reference internal" href="#ootoc.TOC.vector"><code class="docutils literal notranslate"><span class="pre">TOC.vector()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#tocdata-class">TOCData class</a><ul>
+<li><a class="reference internal" href="#tocdata.TOCData"><code class="docutils literal notranslate"><span class="pre">TOCData</span></code></a></li>
+<li><a class="reference internal" href="#pixel-size-in-latitude-and-longitude-units">Pixel size in latitude and longitude units</a><ul>
+<li><a class="reference internal" href="#tocdata.TOCData.DeltaLat"><code class="docutils literal notranslate"><span class="pre">TOCData.DeltaLat</span></code></a></li>
+<li><a class="reference internal" href="#tocdata.TOCData.DeltaLon"><code class="docutils literal notranslate"><span class="pre">TOCData.DeltaLon</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#dimensions-of-the-raster-in-latitude-and-longitude-units">Dimensions of the raster in latitude and longitude units</a><ul>
+<li><a class="reference internal" href="#tocdata.TOCData.lenLat"><code class="docutils literal notranslate"><span class="pre">TOCData.lenLat</span></code></a></li>
+<li><a class="reference internal" href="#tocdata.TOCData.lenLon"><code class="docutils literal notranslate"><span class="pre">TOCData.lenLon</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#bounding-box-of-the-raster-in-latitude-and-longitude-units">Bounding box of the raster in latitude and longitude units</a><ul>
+<li><a class="reference internal" href="#tocdata.TOCData.maxLat"><code class="docutils literal notranslate"><span class="pre">TOCData.maxLat</span></code></a></li>
+<li><a class="reference internal" href="#tocdata.TOCData.maxLon"><code class="docutils literal notranslate"><span class="pre">TOCData.maxLon</span></code></a></li>
+<li><a class="reference internal" href="#tocdata.TOCData.minLat"><code class="docutils literal notranslate"><span class="pre">TOCData.minLat</span></code></a></li>
+<li><a class="reference internal" href="#tocdata.TOCData.minLon"><code class="docutils literal notranslate"><span class="pre">TOCData.minLon</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#number-of-rows-and-cols-of-the-raster">Number of rows and cols of the raster</a><ul>
+<li><a class="reference internal" href="#tocdata.TOCData.nrow"><code class="docutils literal notranslate"><span class="pre">TOCData.nrow</span></code></a></li>
+<li><a class="reference internal" href="#tocdata.TOCData.ncol"><code class="docutils literal notranslate"><span class="pre">TOCData.ncol</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#raster-matrix">Raster matrix</a><ul>
+<li><a class="reference internal" href="#tocdata.TOCData.raster"><code class="docutils literal notranslate"><span class="pre">TOCData.raster</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#raster-file">Raster file</a><ul>
+<li><a class="reference internal" href="#tocdata.TOCData.raster_file"><code class="docutils literal notranslate"><span class="pre">TOCData.raster_file</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div class="sphinxprev">
+    <h4>Previous page</h4>
+    <p class="topless"><a href="index.html"
+                          title="Previous page">&larr; Total-Operating-Characteristic Curve’s documentation</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/usage.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+    
+    
+        <div class="sidebar-toggle-group no-js">
+            
+            <button class="sidebar-toggle" id="sidebar-hide" title="Hide the sidebar menu">
+                 «
+                <span class="show-for-small">hide menu</span>
+                
+            </button>
+            <button class="sidebar-toggle" id="sidebar-show" title="Show the sidebar menu">
+                
+                <span class="show-for-small">menu</span>
+                <span class="hide-for-small">sidebar</span>
+                 »
+            </button>
+        </div>
+    
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="index.html" title="Total-Operating-Characteristic Curve’s documentation"
+             >previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">OOTOC V.0.1 documentation</a> &#187;</li>
+
+        <li class="nav-item nav-item-this"><a href="">Total-Operating-Characteristic Curve’s Implementation</a></li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2024, S. Ivvan Valdez.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
+    </div>
+    <!-- cloud_sptheme 1.4 -->
+  </body>
+</html>

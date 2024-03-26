@@ -1,0 +1,76 @@
+\begin{sphinxtheindex}
+\let\bigletter\sphinxstyleindexlettergroup
+\let\spxpagem \sphinxstyleindexpagemain
+\let\spxentry \sphinxstyleindexentry
+\let\spxextra \sphinxstyleindexextra
+
+  \bigletter A
+  \item \spxentry{area}\spxextra{ootoc.TOC attribute}, \hyperpage{1}
+  \item \spxentry{areaRatio}\spxextra{ootoc.TOC attribute}, \hyperpage{2}
+
+  \indexspace
+  \bigletter B
+  \item \spxentry{basenpos}\spxextra{ootoc.TOC attribute}, \hyperpage{2}
+  \item \spxentry{basentppfp}\spxextra{ootoc.TOC attribute}, \hyperpage{2}
+
+  \indexspace
+  \bigletter D
+  \item \spxentry{DeltaLat}\spxextra{tocdata.TOCData attribute}, \hyperpage{7}
+  \item \spxentry{DeltaLon}\spxextra{tocdata.TOCData attribute}, \hyperpage{7}
+  \item \spxentry{density()}\spxextra{ootoc.TOC method}, \hyperpage{3}
+  \item \spxentry{diff()}\spxextra{ootoc.TOC method}, \hyperpage{4}
+
+  \indexspace
+  \bigletter I
+  \item \spxentry{indices}\spxextra{ootoc.TOC attribute}, \hyperpage{2}
+
+  \indexspace
+  \bigletter K
+  \item \spxentry{kind}\spxextra{ootoc.TOC attribute}, \hyperpage{2}
+
+  \indexspace
+  \bigletter L
+  \item \spxentry{lenLat}\spxextra{tocdata.TOCData attribute}, \hyperpage{7}
+  \item \spxentry{lenLon}\spxextra{tocdata.TOCData attribute}, \hyperpage{7}
+
+  \indexspace
+  \bigletter M
+  \item \spxentry{maxLat}\spxextra{tocdata.TOCData attribute}, \hyperpage{7}
+  \item \spxentry{maxLon}\spxextra{tocdata.TOCData attribute}, \hyperpage{7}
+  \item \spxentry{minLat}\spxextra{tocdata.TOCData attribute}, \hyperpage{7}
+  \item \spxentry{minLon}\spxextra{tocdata.TOCData attribute}, \hyperpage{7}
+
+  \indexspace
+  \bigletter N
+  \item \spxentry{ncol}\spxextra{tocdata.TOCData attribute}, \hyperpage{8}
+  \item \spxentry{ndata}\spxextra{ootoc.TOC attribute}, \hyperpage{2}
+  \item \spxentry{normalize()}\spxextra{ootoc.TOC method}, \hyperpage{5}
+  \item \spxentry{npos}\spxextra{ootoc.TOC attribute}, \hyperpage{3}
+  \item \spxentry{nrow}\spxextra{tocdata.TOCData attribute}, \hyperpage{8}
+  \item \spxentry{ntppfp}\spxextra{ootoc.TOC attribute}, \hyperpage{3}
+
+  \indexspace
+  \bigletter P
+  \item \spxentry{PDataProp}\spxextra{ootoc.TOC attribute}, \hyperpage{3}
+  \item \spxentry{plot()}\spxextra{ootoc.TOC method}, \hyperpage{5}
+
+  \indexspace
+  \bigletter R
+  \item \spxentry{rank2prob()}\spxextra{ootoc.TOC method}, \hyperpage{5}
+  \item \spxentry{raster}\spxextra{tocdata.TOCData attribute}, \hyperpage{8}
+  \item \spxentry{raster\_file}\spxextra{tocdata.TOCData attribute}, \hyperpage{8}
+  \item \spxentry{resample()}\spxextra{ootoc.TOC method}, \hyperpage{6}
+
+  \indexspace
+  \bigletter T
+  \item \spxentry{thresholds}\spxextra{ootoc.TOC attribute}, \hyperpage{3}
+  \item \spxentry{TOC}\spxextra{class in ootoc}, \hyperpage{1}
+  \item \spxentry{TOCData}\spxextra{class in tocdata}, \hyperpage{7}
+  \item \spxentry{TP}\spxextra{ootoc.TOC attribute}, \hyperpage{3}
+  \item \spxentry{TPplusFP}\spxextra{ootoc.TOC attribute}, \hyperpage{3}
+
+  \indexspace
+  \bigletter V
+  \item \spxentry{vector()}\spxextra{ootoc.TOC method}, \hyperpage{6}
+
+\end{sphinxtheindex}

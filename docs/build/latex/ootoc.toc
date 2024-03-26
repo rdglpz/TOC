@@ -1,0 +1,31 @@
+\babel@toc {english}{}\relax 
+\contentsline {chapter}{\numberline {1}Total\sphinxhyphen {}Operating\sphinxhyphen {}Characteristic Curve’s Implementation}{1}{chapter.1}%
+\contentsline {section}{\numberline {1.1}TOC class}{1}{section.1.1}%
+\contentsline {subsection}{\numberline {1.1.1}Area}{1}{subsection.1.1.1}%
+\contentsline {subsection}{\numberline {1.1.2}Area Ratio}{2}{subsection.1.1.2}%
+\contentsline {subsection}{\numberline {1.1.3}Base number of positives}{2}{subsection.1.1.3}%
+\contentsline {subsection}{\numberline {1.1.4}Base number of true positve plus false positives}{2}{subsection.1.1.4}%
+\contentsline {subsection}{\numberline {1.1.5}Kind of TOC curve}{2}{subsection.1.1.5}%
+\contentsline {subsection}{\numberline {1.1.6}Indices of the sorted rank}{2}{subsection.1.1.6}%
+\contentsline {subsection}{\numberline {1.1.7}Number of data}{2}{subsection.1.1.7}%
+\contentsline {subsection}{\numberline {1.1.8}Number of positive instances}{3}{subsection.1.1.8}%
+\contentsline {subsection}{\numberline {1.1.9}Number of true positives plus false positives}{3}{subsection.1.1.9}%
+\contentsline {subsection}{\numberline {1.1.10}Positive\sphinxhyphen {}class data proportion}{3}{subsection.1.1.10}%
+\contentsline {subsection}{\numberline {1.1.11}Thresholds used for the TOC computation}{3}{subsection.1.1.11}%
+\contentsline {subsection}{\numberline {1.1.12}Array of true positives plus false postives}{3}{subsection.1.1.12}%
+\contentsline {subsection}{\numberline {1.1.13}Array of true positives}{3}{subsection.1.1.13}%
+\contentsline {subsection}{\numberline {1.1.14}Probability density function computation}{3}{subsection.1.1.14}%
+\contentsline {subsection}{\numberline {1.1.15}Computation of the difference of two TOCs}{4}{subsection.1.1.15}%
+\contentsline {subsection}{\numberline {1.1.16}TOC normalization}{5}{subsection.1.1.16}%
+\contentsline {subsection}{\numberline {1.1.17}Plotting the TOC curve}{5}{subsection.1.1.17}%
+\contentsline {subsection}{\numberline {1.1.18}Compute a probability from a rank value}{5}{subsection.1.1.18}%
+\contentsline {subsection}{\numberline {1.1.19}Increasing the TOC data by interpolation}{6}{subsection.1.1.19}%
+\contentsline {subsection}{\numberline {1.1.20}Vector representation of a TOC}{6}{subsection.1.1.20}%
+\contentsline {section}{\numberline {1.2}TOCData class}{7}{section.1.2}%
+\contentsline {subsection}{\numberline {1.2.1}Pixel size in latitude and longitude units}{7}{subsection.1.2.1}%
+\contentsline {subsection}{\numberline {1.2.2}Dimensions of the raster in latitude and longitude units}{7}{subsection.1.2.2}%
+\contentsline {subsection}{\numberline {1.2.3}Bounding box of the raster in latitude and longitude units}{7}{subsection.1.2.3}%
+\contentsline {subsection}{\numberline {1.2.4}Number of rows and cols of the raster}{8}{subsection.1.2.4}%
+\contentsline {subsection}{\numberline {1.2.5}Raster matrix}{8}{subsection.1.2.5}%
+\contentsline {subsection}{\numberline {1.2.6}Raster file}{8}{subsection.1.2.6}%
+\contentsline {chapter}{Index}{9}{section*.37}%
