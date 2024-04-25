@@ -620,11 +620,13 @@ def __plotTOC(self,filename = '',title='default',TOCname='TOC',kind='TOC',height
         xlabel="True Positives plus False Positives"
         if (kind=='tTOC'):
             xlabel="Tresholds"
+    
     if(ylabel=="default"):
         ylabel="True Positives"  
+        
     marker='-r'    
-    if (self.isDiscontinuous):
-        marker='.r'
+   # if (self.isDiscontinuous):
+    marker='.r'
     plt.xlabel(xlabel)
     plt.ylabel(ylabel)  
     if (title=='default'):
