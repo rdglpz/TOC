@@ -650,13 +650,14 @@ class TOC:
             plt.plot(rx, ry,'b--')
             plt.plot(self.TPplusFP[~self.idiscontinuous]/self.ntppfp,self.TP[~self.idiscontinuous]/self.npos,marker,label=TOCname,linewidth=2)
         elif (kind=='TOC'):
-            rx=np.array([0,self.npos,self.ntppfp,self.ntppfp-self.npos])
-            ry=np.array([0,self.npos,self.npos,0])
+            rx=np.array([0,self.npos,self.ntppfp,self.ntppfp-self.npos, 0])
+            ry=np.array([0,self.npos,self.npos,0, 0])
             plt.ylim(0, 1.01*self.npos)
             plt.xlim(0, 1.01*self.ntppfp)
             plt.text(0.575*self.ntppfp,0.025*self.npos,'AUC=')
             plt.text(0.675*self.ntppfp,0.025*self.npos,str(round(self.areaRatio,4)))
             plt.plot(rx, ry,'b--')
+          #  plt.plot(rx[0,2], ry[0,2])
             plt.plot(self.TPplusFP[~self.idiscontinuous],self.TP[~self.idiscontinuous],marker,label=TOCname,linewidth=1)
         elif (kind=='tTOC'):
             plt.ylim(0, 1.01*self.npos)
