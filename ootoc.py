@@ -456,7 +456,7 @@ class TOC:
 
         """
 
-        density=TOC()
+        density = TOC()
         if (self.isDiscontinuous):
             n=np.sum(~self.idiscontinuous)
             #Initializing the density function with zeros
@@ -614,7 +614,8 @@ class TOC:
 
 
     def __plotTOC(self,filename = '',title='default',TOCname='TOC',kind='TOC',height=1800,width=1800,dpi=300,xlabel="default",ylabel="default"):
-
+        
+        fig=plt.figure(figsize=(4.8,4.8))
 
         if (filename!=''):
             fig=plt.figure(figsize=(height/dpi, width/dpi), dpi=dpi)
@@ -625,8 +626,10 @@ class TOC:
         if(ylabel=="default"):
             ylabel="True Positives"  
         marker='-r'    
-        if (self.isDiscontinuous):
-            marker='.r'
+        
+        #if (self.isDiscontinuous):
+        marker='.r'
+        
         plt.xlabel(xlabel)
         plt.ylabel(ylabel)  
         if (title=='default'):
@@ -635,6 +638,7 @@ class TOC:
             if (kind=='tTOC'):
                 title="True Positives vs Thresholds"
                 TOCname='TP'
+        
         plt.title(title)
         if(kind=='Normalized'):        
             rx=np.array([0,self.basenpos/self.basentppfp,1,1-self.basenpos/self.basentppfp])
